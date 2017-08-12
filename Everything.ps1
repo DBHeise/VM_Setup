@@ -1,3 +1,4 @@
+## Created: 08/12/2017 14:39:40
 $jobs = @{}
     ## Job: DisableAutomaticProxyCache, C:\dev\VM_Setup\00_Windows\DisableAutomaticProxyCache.ps1
     $jobs.Add("\00_Windows\DisableAutomaticProxyCache.ps1", {
@@ -192,90 +193,6 @@ Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows NT\Printers" -
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\EventViewer" -Name MicrosoftEventVwrDisableLinks -Type DWORD -Value 0x1 -Force
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\SystemCertificates\AuthRoot" -Name DisableRootAutoUpdate /DWORD -Value 0x1 -Force
 
-
-    })
-
-    ## Job: InstallVCRedist2005, C:\dev\VM_Setup\01_CRuntime\InstallVCRedist2005.ps1
-    $jobs.Add("\01_CRuntime\InstallVCRedist2005.ps1", {
-#Taken from https://chocolatey.org/packages/vcredist2005
-
-$url_32 = 'http://download.microsoft.com/download/8/B/4/8B42259F-5D70-43F4-AC2E-4B208FD8D66A/vcredist_x86.EXE'
-$sha1_32 = 'b8fab0bb7f62a24ddfe77b19cd9a1451abd7b847'
-
-$url_64 = 'http://download.microsoft.com/download/8/B/4/8B42259F-5D70-43F4-AC2E-4B208FD8D66A/vcredist_x64.EXE'
-$sha1_64 = 'ee916012783024dac67fc606457377932c826f05'
-
-
-$url = $null
-$sha1 = $null
-
-if ( [Environment]::Is64BitOperatingSystem) {
-    $url = $url_64
-    $sha1 = $sha1_64
-} else {
-    $url = $url_32
-    $sha1 = $sha1_32
-}
-
-## Temporary Folder
-$tmpFolder = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ("tmp_" + (Get-Random))
-if (!(Test-Path $tmpFolder)) { mkdir $tmpFolder | Out-Null}
-
-## Temp File
-$tmpFile = Join-Path -Path $tmpFolder -ChildPath "install.exe"
-
-## Download File
-$response = Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $tmpFile
-
-## Calculate Hash
-$hash = (Get-FileHash -Path $tmpFile -Algorithm SHA1).Hash.ToLower()
-
-## Verify Hash
-if ($hash -ne $sha1) {
-    throw "Hashes do not match!"
-}
-
-## Run file
-. $tmpFile /Q
-
-## Check exit code
-if ($LASTEXITCODE -eq 0 -or $LASTEXITCODE -eq 3010) {
-    ## Clean Up
-    Remove-Item -Path $tmpFolder -Recurse -Force
-} else {
-    throw "Did not install correctly!"
-}
-
-
-    })
-
-    ## Job: InstallVCRedist2008, C:\dev\VM_Setup\01_CRuntime\InstallVCRedist2008.ps1
-    $jobs.Add("\01_CRuntime\InstallVCRedist2008.ps1", {
-
-    })
-
-    ## Job: InstallVCRedist2010, C:\dev\VM_Setup\01_CRuntime\InstallVCRedist2010.ps1
-    $jobs.Add("\01_CRuntime\InstallVCRedist2010.ps1", {
-
-    })
-
-    ## Job: InstallVCRedist2012, C:\dev\VM_Setup\01_CRuntime\InstallVCRedist2012.ps1
-    $jobs.Add("\01_CRuntime\InstallVCRedist2012.ps1", {
-
-    })
-
-    ## Job: InstallVCRedist2013, C:\dev\VM_Setup\01_CRuntime\InstallVCRedist2013.ps1
-    $jobs.Add("\01_CRuntime\InstallVCRedist2013.ps1", {
-
-    })
-
-    ## Job: InstallVCRedist2015, C:\dev\VM_Setup\01_CRuntime\InstallVCRedist2015.ps1
-    $jobs.Add("\01_CRuntime\InstallVCRedist2015.ps1", {
-
-    })
-
-    ## Job: InstallVCRedist2017, C:\dev\VM_Setup\01_CRuntime\InstallVCRedist2017.ps1
-    $jobs.Add("\01_CRuntime\InstallVCRedist2017.ps1", {
 
     })
 

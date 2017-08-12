@@ -1,8 +1,9 @@
 $scriptsInOrder = Get-ChildItem * -Directory | ForEach-Object { Get-ChildItem $_\*.ps1 -Recurse } | Where-Object {!$_.Name.StartsWith("~")} | Sort-Object
 $outFile = ".\Everything.ps1"
 
-
+$dateTime = [DateTime]::UtcNow
 $header = @"
+## Created: $dateTime
 `$jobs = @{}
 "@
 
