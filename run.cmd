@@ -6,4 +6,4 @@ exit /b
 
 :gotPrivileges
 
-powershell -ExecutionPolicy RemoteSigned -NoLogo -File %~dp0\run.ps1
+powershell -ExecutionPolicy ByPass -NoLogo -File %~dp0\run.ps1 -NoExit

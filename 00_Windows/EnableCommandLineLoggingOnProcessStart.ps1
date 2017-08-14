@@ -1,5 +1,6 @@
+$key = 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit'
 #Create the key if missing 
-If((Test-Path 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit') -eq $false ) { New-Item -Path 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit' -force -ea SilentlyContinue } 
+ForceRegKey $key
 
 #Enable the Policy
-Set-ItemProperty -Path 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit' -Name 'ProcessCreationIncludeCmdLine_Enabled' -Value 1 -ea SilentlyContinue 
+Set-ItemProperty -Path $key -Name 'ProcessCreationIncludeCmdLine_Enabled' -Value 1 -ea SilentlyContinue 

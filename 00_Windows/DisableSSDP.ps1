@@ -1,3 +1,3 @@
 # Disable SSDP
-sc stop SSDPSRV
-sc config SSDPSRV start= disabled
+Stop-Service -Name SSDPSRV -Force
+Set-Service -Name SSDPSRV -StartupType Disabled

@@ -1,4 +1,6 @@
 
 # Disable Network Awareness
-Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\NlaSvc\Parameters\Internet" -Name EnableActiveProbing -Value 0x0 -Force
+$key = "HKLM:\System\CurrentControlSet\Services\NlaSvc\Parameters\Internet"
+ForceRegKey($key)
+Set-ItemProperty -Path $key -Name EnableActiveProbing -Value 0x0 -Force
 
