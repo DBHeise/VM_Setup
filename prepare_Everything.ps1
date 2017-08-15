@@ -1,4 +1,7 @@
-$scriptsInOrder = Get-ChildItem * -Directory | ForEach-Object { Get-ChildItem $_\*.ps1 -Recurse } | Where-Object {!$_.Name.StartsWith("~")} | Sort-Object
+
+$myPath = Split-Path $script:MyInvocation.MyCommand.Path
+$scriptsInOrder = Get-ChildItem ($myPath) -Directory | ForEach-Object { Get-ChildItem (($_.FullName) + "\*.ps1") -Recurse } | Where-Object {!$_.Name.StartsWith("~")} | Sort-Object
+
 $outFile = ".\Everything.ps1"
 
 $dateTime = [DateTime]::UtcNow
@@ -30,15 +33,21 @@ $header | Set-Content -Path $outFile
 $scriptsInOrder | % { 
     $shortname = $_.Name.Replace(".ps1","")
     $longname = $_.FullName.Replace($pwd, "")
-    $scriptBlock = gc $_ -Raw
-    $jobBody = @"
-    ## Job: $shortname, $_
-    `$jobs.Add("$longname", {
+    $scriptBlock = Get-Content -Path $_ -Raw
+
+    if ($shortname.StartsWith("_")) {
+        $scriptBlock | Add-Content -Path $outFile
+    } else {
+        $jobBody = @"
+
+## Job: $shortname, $_
+`$jobs.Add("$longname", {
 $scriptBlock
-    })
+})
 
 "@
     $jobBody | Add-Content -Path $outFile
+    }
 }
 $footer | Add-Content -Path $outFile
 
