@@ -18,4 +18,4 @@ Please consider this in its ALPHA stages!
 ### Firefox
     * decent    
 ### Office
-    * not in the repo yet
+    * pretty good
