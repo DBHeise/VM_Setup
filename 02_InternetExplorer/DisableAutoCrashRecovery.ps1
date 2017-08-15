@@ -1,5 +1,6 @@
 #Create the key if missing 
-If((Test-Path 'HKLM:\Software\Policies\Microsoft\Internet Explorer\Recovery') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Microsoft\Internet Explorer\Recovery' -force -ea SilentlyContinue } 
+$key = 'HKLM:\Software\Policies\Microsoft\Internet Explorer\Recovery'
+ForceRegkey($key)
 
 #Enable the Policy
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Microsoft\Internet Explorer\Recovery' -Name 'AutoRecover' -Value 2 -ea SilentlyContinue 
+Set-ItemProperty -Path $key -Name 'AutoRecover' -Value 2 -ea SilentlyContinue 

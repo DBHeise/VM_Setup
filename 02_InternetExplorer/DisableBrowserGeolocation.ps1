@@ -1,5 +1,5 @@
 #Create the key if missing 
-If((Test-Path 'HKLM:\Software\Policies\Microsoft\Internet Explorer\Geolocation') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Microsoft\Internet Explorer\Geolocation' -force -ea SilentlyContinue } 
-
+$key = 'HKLM:\Software\Policies\Microsoft\Internet Explorer\Geolocation'
+ForceRegKey($key)
 #Enable the Policy
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Microsoft\Internet Explorer\Geolocation' -Name 'PolicyDisableGeolocation' -Value 1 -ea SilentlyContinue 
+Set-ItemProperty -Path $key -Name 'PolicyDisableGeolocation' -Value 1 -Force
