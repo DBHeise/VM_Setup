@@ -1,17 +1,46 @@
+$definition = @"
+    using System;
+    using System.Runtime.InteropServices;
+    namespace Win32Api
+    {
+        public class NtDll
+        {
+            [DllImport("ntdll.dll", EntryPoint="RtlAdjustPrivilege")]
+            public static extern int RtlAdjustPrivilege(ulong Privilege, bool Enable, bool CurrentThread, ref bool Enabled);
+        }
+    }
+"@
+                     
+if (-not ("Win32Api.NtDll" -as [type])) 
+{
+    Add-Type -TypeDefinition $definition -PassThru | out-null
+}
+else
+{
+    ("Win32Api.NtDll" -as [type]) | Out-Null
+}
+
 function TakeownRegistry($key) {
-    # TODO does not work for all root keys yet
-    switch ($key.split('\')[0]) {
+
+    # Enable SeTakeOwnershipPrivilege
+    $bEnabled = $false
+    $res = [Win32Api.NtDll]::RtlAdjustPrivilege(9, $true, $false, [ref]$bEnabled)
+
+    $firstPart = $key.split('\')[0]
+    $hive = $null
+    $subkey = $null
+    switch ($firstPart) {
         "HKEY_CLASSES_ROOT" {
-            $reg = [Microsoft.Win32.Registry]::ClassesRoot
-            $key = $key.substring(18)
+            $hive = [Microsoft.Win32.Registry]::ClassesRoot
+            $subkey = $key.substring($firstPart.length + 1)
         }
-        @("HKCU:", "HKEY_CURRENT_USER") {
-            $reg = [Microsoft.Win32.Registry]::CurrentUser
-            $key = $key.substring(18)
+        "HKEY_CURRENT_USER" {
+            $hive = [Microsoft.Win32.Registry]::CurrentUser
+            $subkey = $key.substring($firstPart.length + 1)
         }
-        @("HKLM:", "HKEY_LOCAL_MACHINE") {
-            $reg = [Microsoft.Win32.Registry]::LocalMachine
-            $key = $key.substring(19)
+        "HKEY_LOCAL_MACHINE" {
+            $hive = [Microsoft.Win32.Registry]::LocalMachine
+            $subkey = $key.substring($firstPart.length + 1)
         }
     }
 
@@ -20,7 +49,7 @@ function TakeownRegistry($key) {
     $admins = $admins.Translate([System.Security.Principal.NTAccount])
 
     # set owner
-    $key = $reg.OpenSubKey($key, "ReadWriteSubTree", "TakeOwnership")
+    $key = $hive.OpenSubKey($subkey, "ReadWriteSubTree", "TakeOwnership")
     $acl = $key.GetAccessControl()
     $acl.SetOwner($admins)
     $key.SetAccessControl($acl)
@@ -30,5 +59,6 @@ function TakeownRegistry($key) {
     $rule = New-Object System.Security.AccessControl.RegistryAccessRule($admins, "FullControl", "Allow")
     $acl.SetAccessRule($rule)
     $key.SetAccessControl($acl)
+
 }
 
