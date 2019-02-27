@@ -1,4 +1,4 @@
-## Created: 08/15/2017 15:49:35
+## Created: 02/27/2019 20:00:36
 $jobs = @{}
 function ForceRegKey ($path) {
     if (!(Test-path $path)) {
@@ -72,13 +72,13 @@ function TakeownRegistry($key) {
 
 
 
-## Job: ChangePSExecutionPolicty, C:\dev\VM_Setup\00_Windows\ChangePSExecutionPolicty.ps1
+## Job: ChangePSExecutionPolicty, H:\dev.public\VM_Setup\00_Windows\ChangePSExecutionPolicty.ps1
 $jobs.Add("\00_Windows\ChangePSExecutionPolicty.ps1", {
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Force 
 })
 
 
-## Job: DisableAutomaticProxyCache, C:\dev\VM_Setup\00_Windows\DisableAutomaticProxyCache.ps1
+## Job: DisableAutomaticProxyCache, H:\dev.public\VM_Setup\00_Windows\DisableAutomaticProxyCache.ps1
 $jobs.Add("\00_Windows\DisableAutomaticProxyCache.ps1", {
 #Disable Automatic Proxy Result Cache
 $key = "HKCU:\Software\Policies\Microsoft\Windows\CurrentVersion\Internet Settings"
@@ -88,7 +88,7 @@ Set-ItemProperty -Path  $key -Name EnableAutoproxyResultCache -Type DWORD -Value
 })
 
 
-## Job: DisableErrorReporting, C:\dev\VM_Setup\00_Windows\DisableErrorReporting.ps1
+## Job: DisableErrorReporting, H:\dev.public\VM_Setup\00_Windows\DisableErrorReporting.ps1
 $jobs.Add("\00_Windows\DisableErrorReporting.ps1", {
 
 # Disable Windows Error Reporting
@@ -100,7 +100,7 @@ Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\AeDeb
 })
 
 
-## Job: DisableFirewall, C:\dev\VM_Setup\00_Windows\DisableFirewall.ps1
+## Job: DisableFirewall, H:\dev.public\VM_Setup\00_Windows\DisableFirewall.ps1
 $jobs.Add("\00_Windows\DisableFirewall.ps1", {
 # Disable Firewall
 netsh advfirewall set AllProfiles state off
@@ -108,7 +108,7 @@ netsh advfirewall set AllProfiles state off
 })
 
 
-## Job: DisableFontLogging, C:\dev\VM_Setup\00_Windows\DisableFontLogging.ps1
+## Job: DisableFontLogging, H:\dev.public\VM_Setup\00_Windows\DisableFontLogging.ps1
 $jobs.Add("\00_Windows\DisableFontLogging.ps1", {
 $key = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\MitigationOptions'
 ForceRegKey($key)
@@ -116,7 +116,7 @@ Set-ItemProperty -Path $key -Name 'MitigationOptions_FontBocking' -Value 2000000
 })
 
 
-## Job: DisableIPv6, C:\dev\VM_Setup\00_Windows\DisableIPv6.ps1
+## Job: DisableIPv6, H:\dev.public\VM_Setup\00_Windows\DisableIPv6.ps1
 $jobs.Add("\00_Windows\DisableIPv6.ps1", {
 # Disable IPv6
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" -Name DisabledComponents -Value 0xff -Force
@@ -124,7 +124,7 @@ Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameter
 })
 
 
-## Job: DisableLLMNR, C:\dev\VM_Setup\00_Windows\DisableLLMNR.ps1
+## Job: DisableLLMNR, H:\dev.public\VM_Setup\00_Windows\DisableLLMNR.ps1
 $jobs.Add("\00_Windows\DisableLLMNR.ps1", {
 #Disable LLMNR
 $key = "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient"
@@ -134,7 +134,7 @@ Set-ItemProperty -Path $key -Name EnableMulticast -Type DWORD -Value 0x0 -Force
 })
 
 
-## Job: DisableNetBios, C:\dev\VM_Setup\00_Windows\DisableNetBios.ps1
+## Job: DisableNetBios, H:\dev.public\VM_Setup\00_Windows\DisableNetBios.ps1
 $jobs.Add("\00_Windows\DisableNetBios.ps1", {
 
 #Disable NetBios
@@ -147,7 +147,7 @@ Set-ItemProperty -Path $key -Name EnableDNS -Type String -Value 0 -Force
 })
 
 
-## Job: DisableNetworkAwareness, C:\dev\VM_Setup\00_Windows\DisableNetworkAwareness.ps1
+## Job: DisableNetworkAwareness, H:\dev.public\VM_Setup\00_Windows\DisableNetworkAwareness.ps1
 $jobs.Add("\00_Windows\DisableNetworkAwareness.ps1", {
 
 # Disable Network Awareness
@@ -159,7 +159,7 @@ Set-ItemProperty -Path $key -Name EnableActiveProbing -Value 0x0 -Force
 })
 
 
-## Job: DisableSSDP, C:\dev\VM_Setup\00_Windows\DisableSSDP.ps1
+## Job: DisableSSDP, H:\dev.public\VM_Setup\00_Windows\DisableSSDP.ps1
 $jobs.Add("\00_Windows\DisableSSDP.ps1", {
 # Disable SSDP
 Stop-Service -Name SSDPSRV -Force
@@ -168,7 +168,7 @@ Set-Service -Name SSDPSRV -StartupType Disabled
 })
 
 
-## Job: DisableSystemRestore, C:\dev\VM_Setup\00_Windows\DisableSystemRestore.ps1
+## Job: DisableSystemRestore, H:\dev.public\VM_Setup\00_Windows\DisableSystemRestore.ps1
 $jobs.Add("\00_Windows\DisableSystemRestore.ps1", {
 $key = "HKLM:\Software\Policies\Microsoft\Windows NT\SystemRestore"
 ForceRegKey($key)
@@ -176,7 +176,7 @@ Set-ItemProperty -Path $key -Name 'DisableSR' -Value 1 -Force
 })
 
 
-## Job: DisableTeredo, C:\dev\VM_Setup\00_Windows\DisableTeredo.ps1
+## Job: DisableTeredo, H:\dev.public\VM_Setup\00_Windows\DisableTeredo.ps1
 $jobs.Add("\00_Windows\DisableTeredo.ps1", {
 #Disable Teredo
 netsh interface teredo set state disabled
@@ -184,7 +184,7 @@ netsh interface teredo set state disabled
 })
 
 
-## Job: DisableTimeService, C:\dev\VM_Setup\00_Windows\DisableTimeService.ps1
+## Job: DisableTimeService, H:\dev.public\VM_Setup\00_Windows\DisableTimeService.ps1
 $jobs.Add("\00_Windows\DisableTimeService.ps1", {
 
 #Disable Time Service
@@ -194,7 +194,7 @@ Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\W32Time\Paramete
 })
 
 
-## Job: DisableWindowsDefender, C:\dev\VM_Setup\00_Windows\DisableWindowsDefender.ps1
+## Job: DisableWindowsDefender, H:\dev.public\VM_Setup\00_Windows\DisableWindowsDefender.ps1
 $jobs.Add("\00_Windows\DisableWindowsDefender.ps1", {
 # Disable Windows Defender
 
@@ -241,7 +241,7 @@ Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" 
 })
 
 
-## Job: DisableWPAD, C:\dev\VM_Setup\00_Windows\DisableWPAD.ps1
+## Job: DisableWPAD, H:\dev.public\VM_Setup\00_Windows\DisableWPAD.ps1
 $jobs.Add("\00_Windows\DisableWPAD.ps1", {
 #Disable WPAD
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Wpad" -Name WpadOverride -Type DWORD -Value 0x1 -Force
@@ -249,7 +249,7 @@ Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet
 })
 
 
-## Job: EnableCommandLineLoggingOnProcessStart, C:\dev\VM_Setup\00_Windows\EnableCommandLineLoggingOnProcessStart.ps1
+## Job: EnableCommandLineLoggingOnProcessStart, H:\dev.public\VM_Setup\00_Windows\EnableCommandLineLoggingOnProcessStart.ps1
 $jobs.Add("\00_Windows\EnableCommandLineLoggingOnProcessStart.ps1", {
 $key = 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit'
 #Create the key if missing 
@@ -260,7 +260,7 @@ Set-ItemProperty -Path $key -Name 'ProcessCreationIncludeCmdLine_Enabled' -Value
 })
 
 
-## Job: misc, C:\dev\VM_Setup\00_Windows\misc.ps1
+## Job: misc, H:\dev.public\VM_Setup\00_Windows\misc.ps1
 $jobs.Add("\00_Windows\misc.ps1", {
 
 #Disable Several Windows options for Internet access via Policy
@@ -289,7 +289,7 @@ Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\SystemCertificates\Aut
 })
 
 
-## Job: DisableJavaUpdateScheduler, C:\dev\VM_Setup\01_Java\DisableJavaUpdateScheduler.ps1
+## Job: DisableJavaUpdateScheduler, H:\dev.public\VM_Setup\01_Java\DisableJavaUpdateScheduler.ps1
 $jobs.Add("\01_Java\DisableJavaUpdateScheduler.ps1", {
 
 Remove-Item -Path "HKLM\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Run" -Name "SunJavaUpdateSched" -Force
@@ -312,7 +312,7 @@ if (Test-Path $jusched) {
 })
 
 
-## Job: DisableActiveXFiltering, C:\dev\VM_Setup\02_InternetExplorer\DisableActiveXFiltering.ps1
+## Job: DisableActiveXFiltering, H:\dev.public\VM_Setup\02_InternetExplorer\DisableActiveXFiltering.ps1
 $jobs.Add("\02_InternetExplorer\DisableActiveXFiltering.ps1", {
 #Create the key if missing 
 $key = 'HKLM:\Software\Policies\Microsoft\Internet Explorer\Safety\ActiveXFiltering'
@@ -323,7 +323,7 @@ Set-ItemProperty -Path $key -Name 'IsEnabled' -Value 0 -Force
 })
 
 
-## Job: DisableAutoCrashRecovery, C:\dev\VM_Setup\02_InternetExplorer\DisableAutoCrashRecovery.ps1
+## Job: DisableAutoCrashRecovery, H:\dev.public\VM_Setup\02_InternetExplorer\DisableAutoCrashRecovery.ps1
 $jobs.Add("\02_InternetExplorer\DisableAutoCrashRecovery.ps1", {
 #Create the key if missing 
 $key = 'HKLM:\Software\Policies\Microsoft\Internet Explorer\Recovery'
@@ -334,7 +334,7 @@ Set-ItemProperty -Path $key -Name 'AutoRecover' -Value 2 -ea SilentlyContinue
 })
 
 
-## Job: DisableBrowserGeolocation, C:\dev\VM_Setup\02_InternetExplorer\DisableBrowserGeolocation.ps1
+## Job: DisableBrowserGeolocation, H:\dev.public\VM_Setup\02_InternetExplorer\DisableBrowserGeolocation.ps1
 $jobs.Add("\02_InternetExplorer\DisableBrowserGeolocation.ps1", {
 #Create the key if missing 
 $key = 'HKLM:\Software\Policies\Microsoft\Internet Explorer\Geolocation'
@@ -344,7 +344,7 @@ Set-ItemProperty -Path $key -Name 'PolicyDisableGeolocation' -Value 1 -Force
 })
 
 
-## Job: DisablePerfCheck, C:\dev\VM_Setup\02_InternetExplorer\DisablePerfCheck.ps1
+## Job: DisablePerfCheck, H:\dev.public\VM_Setup\02_InternetExplorer\DisablePerfCheck.ps1
 $jobs.Add("\02_InternetExplorer\DisablePerfCheck.ps1", {
 #Create the key if missing 
 $key = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Ext"
@@ -354,7 +354,7 @@ Set-ItemProperty -Path $key -Name 'DisableAddonLoadTimePerformanceNotifications'
 })
 
 
-## Job: DisableSecuritySettingsCheck, C:\dev\VM_Setup\02_InternetExplorer\DisableSecuritySettingsCheck.ps1
+## Job: DisableSecuritySettingsCheck, H:\dev.public\VM_Setup\02_InternetExplorer\DisableSecuritySettingsCheck.ps1
 $jobs.Add("\02_InternetExplorer\DisableSecuritySettingsCheck.ps1", {
 #Create the key if missing 
 $key = "HKLM:\Software\Policies\Microsoft\Internet Explorer\Security"
@@ -364,7 +364,7 @@ Set-ItemProperty -Path $key -Name 'DisableSecuritySettingsCheck' -Value 1 -Force
 })
 
 
-## Job: DisableSmartScreen, C:\dev\VM_Setup\02_InternetExplorer\DisableSmartScreen.ps1
+## Job: DisableSmartScreen, H:\dev.public\VM_Setup\02_InternetExplorer\DisableSmartScreen.ps1
 $jobs.Add("\02_InternetExplorer\DisableSmartScreen.ps1", {
 #Create the key if missing 
 $key = "HKLM:\Software\Policies\Microsoft\Internet Explorer\PhishingFilter"
@@ -375,7 +375,7 @@ Set-ItemProperty -Path $key -Name 'EnabledV8' -Value 0 -Force
 })
 
 
-## Job: DisableSuggestedSites, C:\dev\VM_Setup\02_InternetExplorer\DisableSuggestedSites.ps1
+## Job: DisableSuggestedSites, H:\dev.public\VM_Setup\02_InternetExplorer\DisableSuggestedSites.ps1
 $jobs.Add("\02_InternetExplorer\DisableSuggestedSites.ps1", {
 #Create the key if missing 
 $key = "HKLM:\Software\Policies\Microsoft\Internet Explorer\Suggested Sites"
@@ -386,7 +386,7 @@ Set-ItemProperty -Path $key -Name 'Enabled' -Value 0 -Force
 })
 
 
-## Job: DisableUpdateCheck, C:\dev\VM_Setup\02_InternetExplorer\DisableUpdateCheck.ps1
+## Job: DisableUpdateCheck, H:\dev.public\VM_Setup\02_InternetExplorer\DisableUpdateCheck.ps1
 $jobs.Add("\02_InternetExplorer\DisableUpdateCheck.ps1", {
 #Create the key if missing 
 $key = "HKLM:\Software\Policies\Microsoft\Internet Explorer\Infodelivery\Restrictions"
@@ -404,7 +404,7 @@ Set-ItemProperty -Path $key -Name 'EnableAutoUpgrade' -Value 0 -ea SilentlyConti
 })
 
 
-## Job: EnableActiveX, C:\dev\VM_Setup\02_InternetExplorer\EnableActiveX.ps1
+## Job: EnableActiveX, H:\dev.public\VM_Setup\02_InternetExplorer\EnableActiveX.ps1
 $jobs.Add("\02_InternetExplorer\EnableActiveX.ps1", {
 #Create the key if missing 
 $key = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Ext"
@@ -415,7 +415,7 @@ Set-ItemProperty -Path $key -Name 'NoFirsttimeprompt' -Value 1 -ea SilentlyConti
 })
 
 
-## Job: EnablePopUps, C:\dev\VM_Setup\02_InternetExplorer\EnablePopUps.ps1
+## Job: EnablePopUps, H:\dev.public\VM_Setup\02_InternetExplorer\EnablePopUps.ps1
 $jobs.Add("\02_InternetExplorer\EnablePopUps.ps1", {
 #Create the key if missing 
 $key ="HKLM:\Software\Policies\Microsoft\Internet Explorer\Restrictions"
@@ -427,7 +427,7 @@ Set-ItemProperty -Path $key -Name 'NoPopupManagement' -Value 1 -ea SilentlyConti
 })
 
 
-## Job: fakeIEHistory, C:\dev\VM_Setup\02_InternetExplorer\fakeIEHistory.ps1
+## Job: fakeIEHistory, H:\dev.public\VM_Setup\02_InternetExplorer\fakeIEHistory.ps1
 $jobs.Add("\02_InternetExplorer\fakeIEHistory.ps1", {
 if (Test-NetConnection) {
     1..100 | % {
@@ -440,7 +440,7 @@ if (Test-NetConnection) {
 })
 
 
-## Job: SetNewTabPage, C:\dev\VM_Setup\02_InternetExplorer\SetNewTabPage.ps1
+## Job: SetNewTabPage, H:\dev.public\VM_Setup\02_InternetExplorer\SetNewTabPage.ps1
 $jobs.Add("\02_InternetExplorer\SetNewTabPage.ps1", {
 #Create the key if missing 
 $key = "HKLM:\Software\Policies\Microsoft\Internet Explorer\TabbedBrowsing"
@@ -451,7 +451,7 @@ Set-ItemProperty -Path $key -Name 'NewTabPageShow' -Value 0 -ea SilentlyContinue
 })
 
 
-## Job: AcceptEULA, C:\dev\VM_Setup\03_Acrobat\AcceptEULA.ps1
+## Job: AcceptEULA, H:\dev.public\VM_Setup\03_Acrobat\AcceptEULA.ps1
 $jobs.Add("\03_Acrobat\AcceptEULA.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\AdobeViewer') -eq $false ) { New-Item -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\AdobeViewer' -force -ea SilentlyContinue } 
@@ -462,7 +462,7 @@ Set-ItemProperty -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\AdobeViewer' -N
 })
 
 
-## Job: DisableAutomaticUpdates, C:\dev\VM_Setup\03_Acrobat\DisableAutomaticUpdates.ps1
+## Job: DisableAutomaticUpdates, H:\dev.public\VM_Setup\03_Acrobat\DisableAutomaticUpdates.ps1
 $jobs.Add("\03_Acrobat\DisableAutomaticUpdates.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown') -eq $false ) { New-Item -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown' -force -Force } 
@@ -472,7 +472,7 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\Featur
 })
 
 
-## Job: DisableFeedback, C:\dev\VM_Setup\03_Acrobat\DisableFeedback.ps1
+## Job: DisableFeedback, H:\dev.public\VM_Setup\03_Acrobat\DisableFeedback.ps1
 $jobs.Add("\03_Acrobat\DisableFeedback.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown') -eq $false ) { New-Item -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown' -force -Force } 
@@ -482,7 +482,7 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\Featur
 })
 
 
-## Job: DisableInDocMessages, C:\dev\VM_Setup\03_Acrobat\DisableInDocMessages.ps1
+## Job: DisableInDocMessages, H:\dev.public\VM_Setup\03_Acrobat\DisableInDocMessages.ps1
 $jobs.Add("\03_Acrobat\DisableInDocMessages.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown\cIPM') -eq $false ) { New-Item -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown\cIPM' -force -Force } 
@@ -492,7 +492,7 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\Featur
 })
 
 
-## Job: DisableProtectedMode, C:\dev\VM_Setup\03_Acrobat\DisableProtectedMode.ps1
+## Job: DisableProtectedMode, H:\dev.public\VM_Setup\03_Acrobat\DisableProtectedMode.ps1
 $jobs.Add("\03_Acrobat\DisableProtectedMode.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown') -eq $false ) { New-Item -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown' -force -Force } 
@@ -503,7 +503,7 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\Featur
 })
 
 
-## Job: DisableSpashScreen, C:\dev\VM_Setup\03_Acrobat\DisableSpashScreen.ps1
+## Job: DisableSpashScreen, H:\dev.public\VM_Setup\03_Acrobat\DisableSpashScreen.ps1
 $jobs.Add("\03_Acrobat\DisableSpashScreen.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\Originals') -eq $false ) { New-Item -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\Originals' -force -ea SilentlyContinue } 
@@ -514,7 +514,7 @@ Set-ItemProperty -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\Originals' -Nam
 })
 
 
-## Job: DisableStartUpMessages, C:\dev\VM_Setup\03_Acrobat\DisableStartUpMessages.ps1
+## Job: DisableStartUpMessages, H:\dev.public\VM_Setup\03_Acrobat\DisableStartUpMessages.ps1
 $jobs.Add("\03_Acrobat\DisableStartUpMessages.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown\cIPM') -eq $false ) { New-Item -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown\cIPM' -force -Force } 
@@ -524,7 +524,7 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\Featur
 })
 
 
-## Job: EnableJS, C:\dev\VM_Setup\03_Acrobat\EnableJS.ps1
+## Job: EnableJS, H:\dev.public\VM_Setup\03_Acrobat\EnableJS.ps1
 $jobs.Add("\03_Acrobat\EnableJS.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\JSPrefs') -eq $false ) { New-Item -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\JSPrefs' -force -ea SilentlyContinue } 
@@ -535,7 +535,7 @@ Set-ItemProperty -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\JSPrefs' -Name 
 })
 
 
-## Job: TrustWindowsZones, C:\dev\VM_Setup\03_Acrobat\TrustWindowsZones.ps1
+## Job: TrustWindowsZones, H:\dev.public\VM_Setup\03_Acrobat\TrustWindowsZones.ps1
 $jobs.Add("\03_Acrobat\TrustWindowsZones.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\TrustManager') -eq $false ) { New-Item -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\TrustManager' -force -ea SilentlyContinue } 
@@ -546,7 +546,7 @@ Set-ItemProperty -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\TrustManager' -
 })
 
 
-## Job: DisableBuiltinDNS, C:\dev\VM_Setup\03_Chrome\DisableBuiltinDNS.ps1
+## Job: DisableBuiltinDNS, H:\dev.public\VM_Setup\03_Chrome\DisableBuiltinDNS.ps1
 $jobs.Add("\03_Chrome\DisableBuiltinDNS.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\Software\Policies\Google\Chrome') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Google\Chrome' -force -Force } 
@@ -556,7 +556,7 @@ Set-ItemProperty -Path 'HKLM:\Software\Policies\Google\Chrome' -Name 'BuiltInDns
 })
 
 
-## Job: DisableSafeBrowsing, C:\dev\VM_Setup\03_Chrome\DisableSafeBrowsing.ps1
+## Job: DisableSafeBrowsing, H:\dev.public\VM_Setup\03_Chrome\DisableSafeBrowsing.ps1
 $jobs.Add("\03_Chrome\DisableSafeBrowsing.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\Software\Policies\Google\Chrome') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Google\Chrome' -force -Force } 
@@ -566,7 +566,7 @@ Set-ItemProperty -Path 'HKLM:\Software\Policies\Google\Chrome' -Name 'SafeBrowsi
 })
 
 
-## Job: DisableSafeSearch, C:\dev\VM_Setup\03_Chrome\DisableSafeSearch.ps1
+## Job: DisableSafeSearch, H:\dev.public\VM_Setup\03_Chrome\DisableSafeSearch.ps1
 $jobs.Add("\03_Chrome\DisableSafeSearch.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\Software\Policies\Google\Chrome') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Google\Chrome' -force -Force } 
@@ -577,7 +577,7 @@ Set-ItemProperty -Path 'HKLM:\Software\Policies\Google\Chrome' -Name 'ForceGoogl
 })
 
 
-## Job: DisableUpdates, C:\dev\VM_Setup\03_Chrome\DisableUpdates.ps1
+## Job: DisableUpdates, H:\dev.public\VM_Setup\03_Chrome\DisableUpdates.ps1
 $jobs.Add("\03_Chrome\DisableUpdates.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\Software\Policies\Google\Update') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Google\Update' -force} 
@@ -590,7 +590,7 @@ Set-ItemProperty -Path 'HKLM:\Software\Policies\Google\Update' -Name 'AutoUpdate
 })
 
 
-## Job: DisableAddOnWizard, C:\dev\VM_Setup\03_Firefox\DisableAddOnWizard.ps1
+## Job: DisableAddOnWizard, H:\dev.public\VM_Setup\03_Firefox\DisableAddOnWizard.ps1
 $jobs.Add("\03_Firefox\DisableAddOnWizard.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\Software\Policies\Mozilla\Firefox') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -force -ea SilentlyContinue } 
@@ -600,7 +600,7 @@ Set-ItemProperty -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -Name 'DisableA
 })
 
 
-## Job: DisableAutomaticUpdates, C:\dev\VM_Setup\03_Firefox\DisableAutomaticUpdates.ps1
+## Job: DisableAutomaticUpdates, H:\dev.public\VM_Setup\03_Firefox\DisableAutomaticUpdates.ps1
 $jobs.Add("\03_Firefox\DisableAutomaticUpdates.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\Software\Policies\Mozilla\Firefox') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -force -ea SilentlyContinue } 
@@ -613,7 +613,7 @@ Set-ItemProperty -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -Name 'DisableS
 })
 
 
-## Job: DisableDefaultBrowserCheck, C:\dev\VM_Setup\03_Firefox\DisableDefaultBrowserCheck.ps1
+## Job: DisableDefaultBrowserCheck, H:\dev.public\VM_Setup\03_Firefox\DisableDefaultBrowserCheck.ps1
 $jobs.Add("\03_Firefox\DisableDefaultBrowserCheck.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\Software\Policies\Mozilla\Firefox') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -force -ea SilentlyContinue } 
@@ -624,7 +624,7 @@ Set-ItemProperty -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -Name 'DisableD
 })
 
 
-## Job: DisableKnowYourRights, C:\dev\VM_Setup\03_Firefox\DisableKnowYourRights.ps1
+## Job: DisableKnowYourRights, H:\dev.public\VM_Setup\03_Firefox\DisableKnowYourRights.ps1
 $jobs.Add("\03_Firefox\DisableKnowYourRights.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\Software\Policies\Mozilla\Firefox') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -force -ea SilentlyContinue } 
@@ -635,7 +635,7 @@ Set-ItemProperty -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -Name 'DisableR
 })
 
 
-## Job: DisableTelemetry, C:\dev\VM_Setup\03_Firefox\DisableTelemetry.ps1
+## Job: DisableTelemetry, H:\dev.public\VM_Setup\03_Firefox\DisableTelemetry.ps1
 $jobs.Add("\03_Firefox\DisableTelemetry.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\Software\Policies\Mozilla\Firefox') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -force -ea SilentlyContinue } 
@@ -646,7 +646,7 @@ Set-ItemProperty -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -Name 'DisableT
 })
 
 
-## Job: DisableWhatsNew, C:\dev\VM_Setup\03_Firefox\DisableWhatsNew.ps1
+## Job: DisableWhatsNew, H:\dev.public\VM_Setup\03_Firefox\DisableWhatsNew.ps1
 $jobs.Add("\03_Firefox\DisableWhatsNew.ps1", {
 #Create the key if missing 
 If((Test-Path 'HKLM:\Software\Policies\Mozilla\Firefox') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -force -ea SilentlyContinue } 
@@ -660,7 +660,7 @@ $OfficeVersions = Get-ChildItem -Path "HKCU:\Software\Microsoft\Office\" | Where
 
 
 
-## Job: AllowOpeningCDRFiles, C:\dev\VM_Setup\03_Office\AllowOpeningCDRFiles.ps1
+## Job: AllowOpeningCDRFiles, H:\dev.public\VM_Setup\03_Office\AllowOpeningCDRFiles.ps1
 $jobs.Add("\03_Office\AllowOpeningCDRFiles.ps1", {
 $key = "HKCU:\Software\Microsoft\Office\Shared Tools\Graphics Filters\Import\CDR"
 ForceRegKey($key)
@@ -668,7 +668,7 @@ Set-ItemProperty -Path $key -Type DWORD -Value 0x1 -Force
 })
 
 
-## Job: DisableAppSecurity, C:\dev\VM_Setup\03_Office\DisableAppSecurity.ps1
+## Job: DisableAppSecurity, H:\dev.public\VM_Setup\03_Office\DisableAppSecurity.ps1
 $jobs.Add("\03_Office\DisableAppSecurity.ps1", {
 $OfficeVersions | ForEach-Object {
     $key = "HKCU:\Software\Microsoft\Office\" + $_ + "\Common\Security"
@@ -681,7 +681,7 @@ $OfficeVersions | ForEach-Object {
 })
 
 
-## Job: DisableDEP, C:\dev\VM_Setup\03_Office\DisableDEP.ps1
+## Job: DisableDEP, H:\dev.public\VM_Setup\03_Office\DisableDEP.ps1
 $jobs.Add("\03_Office\DisableDEP.ps1", {
 
 @("Word", "Excel", "PowerPoint") | ForEach-Object {
@@ -698,7 +698,7 @@ $jobs.Add("\03_Office\DisableDEP.ps1", {
 })
 
 
-## Job: DisableDRMPropertyEncryption, C:\dev\VM_Setup\03_Office\DisableDRMPropertyEncryption.ps1
+## Job: DisableDRMPropertyEncryption, H:\dev.public\VM_Setup\03_Office\DisableDRMPropertyEncryption.ps1
 $jobs.Add("\03_Office\DisableDRMPropertyEncryption.ps1", {
 $OfficeVersions | ForEach-Object {
     $key = "HKCU:\Software\Microsoft\Office\" + $_ + "\Common\Security"
@@ -709,7 +709,7 @@ $OfficeVersions | ForEach-Object {
 })
 
 
-## Job: DisableFileBlock, C:\dev\VM_Setup\03_Office\DisableFileBlock.ps1
+## Job: DisableFileBlock, H:\dev.public\VM_Setup\03_Office\DisableFileBlock.ps1
 $jobs.Add("\03_Office\DisableFileBlock.ps1", {
 @("Word", "Excel", "PowerPoint") | ForEach-Object {
     $app = $_
@@ -764,7 +764,7 @@ $jobs.Add("\03_Office\DisableFileBlock.ps1", {
 })
 
 
-## Job: DisableFileValidationReporting, C:\dev\VM_Setup\03_Office\DisableFileValidationReporting.ps1
+## Job: DisableFileValidationReporting, H:\dev.public\VM_Setup\03_Office\DisableFileValidationReporting.ps1
 $jobs.Add("\03_Office\DisableFileValidationReporting.ps1", {
 
 $OfficeVersions | ForEach-Object {
@@ -776,7 +776,7 @@ $OfficeVersions | ForEach-Object {
 })
 
 
-## Job: DisableFirstRun, C:\dev\VM_Setup\03_Office\DisableFirstRun.ps1
+## Job: DisableFirstRun, H:\dev.public\VM_Setup\03_Office\DisableFirstRun.ps1
 $jobs.Add("\03_Office\DisableFirstRun.ps1", {
 $OfficeVersions | ForEach-Object {
     $version = $_
@@ -788,7 +788,7 @@ $OfficeVersions | ForEach-Object {
 })
 
 
-## Job: DisableHyperlinkWarning, C:\dev\VM_Setup\03_Office\DisableHyperlinkWarning.ps1
+## Job: DisableHyperlinkWarning, H:\dev.public\VM_Setup\03_Office\DisableHyperlinkWarning.ps1
 $jobs.Add("\03_Office\DisableHyperlinkWarning.ps1", {
 $OfficeVersions | ForEach-Object {
     $key = "HKCU:\Software\Microsoft\Office\" + $_ + "\Common\Security"
@@ -799,7 +799,7 @@ $OfficeVersions | ForEach-Object {
 })
 
 
-## Job: DisableProtectedView, C:\dev\VM_Setup\03_Office\DisableProtectedView.ps1
+## Job: DisableProtectedView, H:\dev.public\VM_Setup\03_Office\DisableProtectedView.ps1
 $jobs.Add("\03_Office\DisableProtectedView.ps1", {
 @("Word", "Excel", "PowerPoint") | ForEach-Object {
     $app = $_
@@ -816,7 +816,7 @@ $jobs.Add("\03_Office\DisableProtectedView.ps1", {
 })
 
 
-## Job: DisableReliabilityUpdate, C:\dev\VM_Setup\03_Office\DisableReliabilityUpdate.ps1
+## Job: DisableReliabilityUpdate, H:\dev.public\VM_Setup\03_Office\DisableReliabilityUpdate.ps1
 $jobs.Add("\03_Office\DisableReliabilityUpdate.ps1", {
 
 $OfficeVersions | ForEach-Object {
@@ -828,7 +828,7 @@ $OfficeVersions | ForEach-Object {
 })
 
 
-## Job: DisableVBAWarnings, C:\dev\VM_Setup\03_Office\DisableVBAWarnings.ps1
+## Job: DisableVBAWarnings, H:\dev.public\VM_Setup\03_Office\DisableVBAWarnings.ps1
 $jobs.Add("\03_Office\DisableVBAWarnings.ps1", {
 
 @("Word", "Excel", "PowerPoint", "Publisher", "MS Project", "Visio") | ForEach-Object {
@@ -844,7 +844,7 @@ $jobs.Add("\03_Office\DisableVBAWarnings.ps1", {
 })
 
 
-## Job: EnableAccessVBOM, C:\dev\VM_Setup\03_Office\EnableAccessVBOM.ps1
+## Job: EnableAccessVBOM, H:\dev.public\VM_Setup\03_Office\EnableAccessVBOM.ps1
 $jobs.Add("\03_Office\EnableAccessVBOM.ps1", {
 @("Word", "Excel", "PowerPoint") | ForEach-Object {
     $app = $_
@@ -859,7 +859,19 @@ $jobs.Add("\03_Office\EnableAccessVBOM.ps1", {
 })
 
 
-## Job: EnableExcelDataConnections, C:\dev\VM_Setup\03_Office\EnableExcelDataConnections.ps1
+## Job: EnableActiveX, H:\dev.public\VM_Setup\03_Office\EnableActiveX.ps1
+$jobs.Add("\03_Office\EnableActiveX.ps1", {
+#Enable All ActiveX without SafeMode
+
+$OfficeVersions | ForEach-Object {
+    $key = "HKCU:\Software\Microsoft\Office\" + $_ + "\Common\Security"
+    ForceRegKey($key)
+    Set-ItemProperty -Path $key -Name "UFIControls" -Type DWORD -Value 0x1 -Force
+}
+})
+
+
+## Job: EnableExcelDataConnections, H:\dev.public\VM_Setup\03_Office\EnableExcelDataConnections.ps1
 $jobs.Add("\03_Office\EnableExcelDataConnections.ps1", {
 $OfficeVersions | ForEach-Object {
     $key = "HKCU:\Software\Microsoft\Office\" + $_ + "\Excel\Security"
@@ -870,7 +882,7 @@ $OfficeVersions | ForEach-Object {
 })
 
 
-## Job: EnableExcelLinkedWorkbooks, C:\dev\VM_Setup\03_Office\EnableExcelLinkedWorkbooks.ps1
+## Job: EnableExcelLinkedWorkbooks, H:\dev.public\VM_Setup\03_Office\EnableExcelLinkedWorkbooks.ps1
 $jobs.Add("\03_Office\EnableExcelLinkedWorkbooks.ps1", {
 $OfficeVersions | ForEach-Object {
     $key = "HKCU:\Software\Microsoft\Office\" + $_ + "\Excel\Security"
@@ -881,7 +893,7 @@ $OfficeVersions | ForEach-Object {
 })
 
 
-## Job: EnableFileValidationLogging, C:\dev\VM_Setup\03_Office\EnableFileValidationLogging.ps1
+## Job: EnableFileValidationLogging, H:\dev.public\VM_Setup\03_Office\EnableFileValidationLogging.ps1
 $jobs.Add("\03_Office\EnableFileValidationLogging.ps1", {
 $OfficeVersions | ForEach-Object {
     $key = "HKCU:\Software\Microsoft\Office\" + $_ + "\Common"
@@ -891,7 +903,7 @@ $OfficeVersions | ForEach-Object {
 })
 
 
-## Job: EnableFileValidationOnLoad, C:\dev\VM_Setup\03_Office\EnableFileValidationOnLoad.ps1
+## Job: EnableFileValidationOnLoad, H:\dev.public\VM_Setup\03_Office\EnableFileValidationOnLoad.ps1
 $jobs.Add("\03_Office\EnableFileValidationOnLoad.ps1", {
 @("Word", "Excel", "PowerPoint") | ForEach-Object {
     $app = $_
@@ -906,7 +918,7 @@ $jobs.Add("\03_Office\EnableFileValidationOnLoad.ps1", {
 })
 
 
-## Job: EnableFileValidationOnSave, C:\dev\VM_Setup\03_Office\EnableFileValidationOnSave.ps1
+## Job: EnableFileValidationOnSave, H:\dev.public\VM_Setup\03_Office\EnableFileValidationOnSave.ps1
 $jobs.Add("\03_Office\EnableFileValidationOnSave.ps1", {
 @("Word", "Excel", "PowerPoint") | ForEach-Object {
     $app = $_
@@ -921,7 +933,7 @@ $jobs.Add("\03_Office\EnableFileValidationOnSave.ps1", {
 })
 
 
-## Job: EnableMacros, C:\dev\VM_Setup\03_Office\EnableMacros.ps1
+## Job: EnableMacros, H:\dev.public\VM_Setup\03_Office\EnableMacros.ps1
 $jobs.Add("\03_Office\EnableMacros.ps1", {
 $key = "HKCU:\Software\Policies\Microsoft\Office\Common\Security"
 ForceRegKey($key)
@@ -929,7 +941,7 @@ Set-ItemProperty -Path $key -Name "automationsecurity" -value 1 -Force
 })
 
 
-## Job: EnableVBA, C:\dev\VM_Setup\03_Office\EnableVBA.ps1
+## Job: EnableVBA, H:\dev.public\VM_Setup\03_Office\EnableVBA.ps1
 $jobs.Add("\03_Office\EnableVBA.ps1", {
 
 
@@ -943,7 +955,7 @@ $jobs.Add("\03_Office\EnableVBA.ps1", {
 })
 
 
-## Job: FakeOfficeMRU, C:\dev\VM_Setup\03_Office\FakeOfficeMRU.ps1
+## Job: FakeOfficeMRU, H:\dev.public\VM_Setup\03_Office\FakeOfficeMRU.ps1
 $jobs.Add("\03_Office\FakeOfficeMRU.ps1", {
 
 $apps = @("Word", "Excel", "PowerPoint")
@@ -988,7 +1000,7 @@ $OfficeVersions| % {
 })
 
 
-## Job: SetSecurityLevel, C:\dev\VM_Setup\03_Office\SetSecurityLevel.ps1
+## Job: SetSecurityLevel, H:\dev.public\VM_Setup\03_Office\SetSecurityLevel.ps1
 $jobs.Add("\03_Office\SetSecurityLevel.ps1", {
 
 @("Word", "Excel", "PowerPoint", "Publisher", "MS Project", "Visio") | ForEach-Object {
