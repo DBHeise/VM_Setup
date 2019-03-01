@@ -1,4 +1,4 @@
-## Created: 03/01/2019 16:53:43
+## Created: 03/01/2019 17:15:09
 $jobs = @{}
 function ForceRegKey ($path) {
     if (!(Test-path $path)) {
@@ -281,6 +281,24 @@ ForceRegKey $key
 
 #Enable the Policy
 Set-ItemProperty -Path $key -Name 'ProcessCreationIncludeCmdLine_Enabled' -Value 1 -ea SilentlyContinue 
+})
+
+
+## Job: EnabledPSScriptLogging, H:\dev.public\VM_Setup\00_Windows\EnabledPSScriptLogging.ps1
+$jobs.Add("\00_Windows\EnabledPSScriptLogging.ps1", {
+## Script Block Logging
+$key = "HKLM:\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging"
+ForceRegkey($key)
+Set-ItemProperty -Path $key -Name "EnableScriptBlockLogging" -Type DWORD -Value 0x1 -Force
+Set-ItemProperty -Path $key -Name "EnableScriptBlockInvocationLogging" -Type DWORD -Value 0x1 -Force
+
+## System-Wide Transcription
+#$key = "HKLM:\Software\Policies\Microsoft\Windows\PowerShell\Transcription"
+#ForceRegKey($key)
+#Set-ItemProperty -Path $key -Name "EnableTranscripting" -Type DWORD -Value 0x1 -Force
+#Set-ItemProperty -Path $key -Name "IncludeInvocationHeader" -Type DWORD -Value 0x1 -Force
+#Set-ItemProperty -Path $key -Name "OutputDirectory" -Type String -Value "C:\ScriptLogs" -Force
+
 })
 
 
