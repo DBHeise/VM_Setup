@@ -32,5 +32,5 @@ Set-ItemPropertyEx -Path "HKLM:\Software\Policies\Microsoft\Windows\HandwritingE
 Set-ItemPropertyEx -Path "HKLM:\Software\Policies\Microsoft\Windows NT\Printers" -Name DisableHTTPPrinting -Type DWORD -Value 0x1 -Force
 Set-ItemPropertyEx -Path "HKLM:\Software\Policies\Microsoft\Windows NT\Printers" -Name DisableWebPnPDownload -Type DWORD -Value 0x1 -Force
 Set-ItemPropertyEx -Path "HKLM:\Software\Policies\Microsoft\EventViewer" -Name MicrosoftEventVwrDisableLinks -Type DWORD -Value 0x1 -Force
-Set-ItemPropertyEx -Path "HKLM:\Software\Policies\Microsoft\SystemCertificates\AuthRoot" -Name DisableRootAutoUpdate /DWORD -Value 0x1 -Force
+Set-ItemPropertyEx -Path "HKLM:\Software\Policies\Microsoft\SystemCertificates\AuthRoot" -Name DisableRootAutoUpdate DWORD -Value 0x1 -Force
 

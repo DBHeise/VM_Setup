@@ -1,4 +1,4 @@
-## Created: 03/01/2019 17:17:04
+## Created: 03/01/2019 17:22:47
 $jobs = @{}
 function ForceRegKey ($path) {
     if (!(Test-path $path)) {
@@ -338,7 +338,7 @@ Set-ItemPropertyEx -Path "HKLM:\Software\Policies\Microsoft\Windows\HandwritingE
 Set-ItemPropertyEx -Path "HKLM:\Software\Policies\Microsoft\Windows NT\Printers" -Name DisableHTTPPrinting -Type DWORD -Value 0x1 -Force
 Set-ItemPropertyEx -Path "HKLM:\Software\Policies\Microsoft\Windows NT\Printers" -Name DisableWebPnPDownload -Type DWORD -Value 0x1 -Force
 Set-ItemPropertyEx -Path "HKLM:\Software\Policies\Microsoft\EventViewer" -Name MicrosoftEventVwrDisableLinks -Type DWORD -Value 0x1 -Force
-Set-ItemPropertyEx -Path "HKLM:\Software\Policies\Microsoft\SystemCertificates\AuthRoot" -Name DisableRootAutoUpdate /DWORD -Value 0x1 -Force
+Set-ItemPropertyEx -Path "HKLM:\Software\Policies\Microsoft\SystemCertificates\AuthRoot" -Name DisableRootAutoUpdate DWORD -Value 0x1 -Force
 
 
 })
