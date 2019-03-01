@@ -1,4 +1,4 @@
-## Created: 03/01/2019 16:43:59
+## Created: 03/01/2019 16:46:54
 $jobs = @{}
 function ForceRegKey ($path) {
     if (!(Test-path $path)) {
@@ -1013,14 +1013,14 @@ $OfficeVersions| % {
             $id = RandomId
             $filename = RandomFileName
             $val = "[F00000000][T0" + $id + "][O00000000]*" + $baseFolder + "\" + $filename
-            New-ItemProperty $key_File -Name ("Item " + $i) -Value $val -PropertyType String
+            Set-ItemProperty $key_File -Name ("Item " + $i) -Value $val -PropertyType String -Force
         }
     
         1..(Get-Random -Minimum 5 -Maximum 10)| % {
             $i = $_
             $id = RandomId
             $val = "[F00000000][T0" + $id + "][O00000000]*" + $baseFolder + "\"
-            New-ItemProperty $key_Place -Name ("Item " + $i) -Value $val -PropertyType String
+            Set-ItemProperty $key_Place -Name ("Item " + $i) -Value $val -PropertyType String -Force
         }
     }
 }
