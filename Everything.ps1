@@ -1,4 +1,4 @@
-## Created: 03/01/2019 16:03:08
+## Created: 03/01/2019 16:13:51
 $jobs = @{}
 function ForceRegKey ($path) {
     if (!(Test-path $path)) {
@@ -436,7 +436,7 @@ Set-ItemProperty -Path $key -Name 'NoPopupManagement' -Value 1 -ea SilentlyConti
 
 ## Job: fakeIEHistory, H:\dev.public\VM_Setup\02_InternetExplorer\fakeIEHistory.ps1
 $jobs.Add("\02_InternetExplorer\fakeIEHistory.ps1", {
-if (Test-NetConnection) {
+if (Test-Connection "internetbeacon.msedge.net" -Quiet) {
     1..100 | % {
         [System.Diagnostics.Process]::Start("http://www.randomwebsite.com/cgi-bin/random.pl")
     }
