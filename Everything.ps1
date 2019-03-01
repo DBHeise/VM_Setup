@@ -1,4 +1,4 @@
-## Created: 02/27/2019 20:00:36
+## Created: 03/01/2019 16:03:08
 $jobs = @{}
 function ForceRegKey ($path) {
     if (!(Test-path $path)) {
@@ -94,7 +94,11 @@ $jobs.Add("\00_Windows\DisableErrorReporting.ps1", {
 # Disable Windows Error Reporting
 ForceRegKey("HKLM:\Software\Policies\Microsoft\PCHealth\ErrorReporting")
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport -Type DWORD -Value 0x0 -Force
+
+ForceRegkey("HKLM:\Software\Microsoft\Windows\Windows Error Reporting")
 Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type DWORD -Value 0x1 -Force
+
+ForceRegKey("HKLM:\Software\Microsoft\Windows NT\CurrentVersion\AeDebug")
 Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\AeDebug" -Name Auto -Type String -Value 1 -Force
 
 })
@@ -119,6 +123,7 @@ Set-ItemProperty -Path $key -Name 'MitigationOptions_FontBocking' -Value 2000000
 ## Job: DisableIPv6, H:\dev.public\VM_Setup\00_Windows\DisableIPv6.ps1
 $jobs.Add("\00_Windows\DisableIPv6.ps1", {
 # Disable IPv6
+ForceRegKey("HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters")
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" -Name DisabledComponents -Value 0xff -Force
 
 })
@@ -188,6 +193,7 @@ netsh interface teredo set state disabled
 $jobs.Add("\00_Windows\DisableTimeService.ps1", {
 
 #Disable Time Service
+ForceRegKey("HKLM:\System\CurrentControlSet\Services\W32Time\Parameters")
 Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\W32Time\Parameters" -Name Type -Type String -Value NoSync -Force
 
 
@@ -197,7 +203,7 @@ Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\W32Time\Paramete
 ## Job: DisableWindowsDefender, H:\dev.public\VM_Setup\00_Windows\DisableWindowsDefender.ps1
 $jobs.Add("\00_Windows\DisableWindowsDefender.ps1", {
 # Disable Windows Defender
-
+ForceRegKey("HKLM:\Software\Policies\Microsoft\Windows Defender")
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -Type DWord -Value 1
 
 
@@ -244,6 +250,7 @@ Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" 
 ## Job: DisableWPAD, H:\dev.public\VM_Setup\00_Windows\DisableWPAD.ps1
 $jobs.Add("\00_Windows\DisableWPAD.ps1", {
 #Disable WPAD
+ForceRegKey("HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Wpad")
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Wpad" -Name WpadOverride -Type DWORD -Value 0x1 -Force
 
 })
@@ -450,222 +457,212 @@ ForceRegKey($key)
 Set-ItemProperty -Path $key -Name 'NewTabPageShow' -Value 0 -ea SilentlyContinue 
 })
 
+$AdobeReaderBaseKey = 'HKCU:\Software\Adobe\Acrobat Reader\2017\AdobeViewer'
+
+#Create the key if missing 
+ForceRegKey($AdobeReaderBaseKey)
+
+$AdobeReaderPolicyFLKey = 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown'
+
+#Create the key if missing 
+ForceRegKey($AdobeReaderPolicyFLKey)
+
 
 ## Job: AcceptEULA, H:\dev.public\VM_Setup\03_Acrobat\AcceptEULA.ps1
 $jobs.Add("\03_Acrobat\AcceptEULA.ps1", {
-#Create the key if missing 
-If((Test-Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\AdobeViewer') -eq $false ) { New-Item -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\AdobeViewer' -force -ea SilentlyContinue } 
 
 #Enable the Policy
-Set-ItemProperty -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\AdobeViewer' -Name 'EULA' -Value 1 -ea SilentlyContinue 
+Set-ItemProperty -Path $AdobeReaderBaseKey -Name 'EULA' -Value 1 -ea SilentlyContinue 
 
 })
 
 
 ## Job: DisableAutomaticUpdates, H:\dev.public\VM_Setup\03_Acrobat\DisableAutomaticUpdates.ps1
 $jobs.Add("\03_Acrobat\DisableAutomaticUpdates.ps1", {
-#Create the key if missing 
-If((Test-Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown') -eq $false ) { New-Item -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown' -force -Force } 
 
 #Enable the Policy
-Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown' -Name 'bUpdater' -Value 1 -Force
+Set-ItemProperty -Path $AdobeReaderPolicyFLKey -Name 'bUpdater' -Value 1 -Force
 })
 
 
 ## Job: DisableFeedback, H:\dev.public\VM_Setup\03_Acrobat\DisableFeedback.ps1
 $jobs.Add("\03_Acrobat\DisableFeedback.ps1", {
-#Create the key if missing 
-If((Test-Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown') -eq $false ) { New-Item -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown' -force -Force } 
 
 #Disable the Policy 
-Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown' -Name 'bUsageMeasurement' -Value 0 -Force
+Set-ItemProperty -Path $AdobeReaderPolicyFLKey -Name 'bUsageMeasurement' -Value 0 -Force
 })
 
 
 ## Job: DisableInDocMessages, H:\dev.public\VM_Setup\03_Acrobat\DisableInDocMessages.ps1
 $jobs.Add("\03_Acrobat\DisableInDocMessages.ps1", {
+$key = $AdobeReaderPolicyFLKey + "\cIPM"
 #Create the key if missing 
-If((Test-Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown\cIPM') -eq $false ) { New-Item -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown\cIPM' -force -Force } 
+ForceRegKey($key)
 
 #Disable the Policy 
-Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown\cIPM' -Name 'bDontShowMsgWhenViewingDoc' -Value 0 -Force 
+Set-ItemProperty -Path $key -Name 'bDontShowMsgWhenViewingDoc' -Value 0 -Force 
 })
 
 
 ## Job: DisableProtectedMode, H:\dev.public\VM_Setup\03_Acrobat\DisableProtectedMode.ps1
 $jobs.Add("\03_Acrobat\DisableProtectedMode.ps1", {
-#Create the key if missing 
-If((Test-Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown') -eq $false ) { New-Item -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown' -force -Force } 
 
 #Disable the Policy 
-Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown' -Name 'bProtectedMode' -Value 0 -Force 
+Set-ItemProperty -Path $AdobeReaderPolicyFLKey -Name 'bProtectedMode' -Value 0 -Force 
 
 })
 
 
 ## Job: DisableSpashScreen, H:\dev.public\VM_Setup\03_Acrobat\DisableSpashScreen.ps1
 $jobs.Add("\03_Acrobat\DisableSpashScreen.ps1", {
-#Create the key if missing 
-If((Test-Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\Originals') -eq $false ) { New-Item -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\Originals' -force -ea SilentlyContinue } 
 
 #Disable the Policy 
-Set-ItemProperty -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\Originals' -Name 'bDisplayAboutDialog' -Value 0 -ea SilentlyContinue 
+Set-ItemProperty -Path $AdobeReaderPolicyFLKey -Name 'bDisplayAboutDialog' -Value 0 -ea SilentlyContinue 
 
 })
 
 
 ## Job: DisableStartUpMessages, H:\dev.public\VM_Setup\03_Acrobat\DisableStartUpMessages.ps1
 $jobs.Add("\03_Acrobat\DisableStartUpMessages.ps1", {
+$key = $AdobeReaderPolicyFLKey + "\cIPM"
 #Create the key if missing 
-If((Test-Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown\cIPM') -eq $false ) { New-Item -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown\cIPM' -force -Force } 
+ForceRegKey($key)
 
 #Disable the Policy 
-Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Adobe\Acrobat Reader\2017\FeatureLockdown\cIPM' -Name 'bShowMsgAtLaunch' -Value 0 -Force 
+Set-ItemProperty -Path $key -Name 'bShowMsgAtLaunch' -Value 0 -Force 
 })
 
 
 ## Job: EnableJS, H:\dev.public\VM_Setup\03_Acrobat\EnableJS.ps1
 $jobs.Add("\03_Acrobat\EnableJS.ps1", {
+$key = 'HKCU:\Software\Adobe\Acrobat Reader\2017\JSPrefs'
 #Create the key if missing 
-If((Test-Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\JSPrefs') -eq $false ) { New-Item -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\JSPrefs' -force -ea SilentlyContinue } 
+ForceRegKey($key)
 
 #Enable the Policy
-Set-ItemProperty -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\JSPrefs' -Name 'bEnableJS' -Value 1 -ea SilentlyContinue 
+Set-ItemProperty -Path $key -Name 'bEnableJS' -Value 1 -ea SilentlyContinue 
 
 })
 
 
 ## Job: TrustWindowsZones, H:\dev.public\VM_Setup\03_Acrobat\TrustWindowsZones.ps1
 $jobs.Add("\03_Acrobat\TrustWindowsZones.ps1", {
+
+$key = 'HKCU:\Software\Adobe\Acrobat Reader\2017\TrustManager' 
 #Create the key if missing 
-If((Test-Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\TrustManager') -eq $false ) { New-Item -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\TrustManager' -force -ea SilentlyContinue } 
+ForceRegKey($key)
 
 #Enable the Policy
-Set-ItemProperty -Path 'HKCU:\Software\Adobe\Acrobat Reader\2017\TrustManager' -Name 'bTrustOSTrustedSites' -Value 1 -ea SilentlyContinue 
+Set-ItemProperty -Path $key -Name 'bTrustOSTrustedSites' -Value 1 -ea SilentlyContinue 
 
 })
+
+$chromePolicyKey = 'HKLM:\Software\Policies\Google\Chrome'
+
+#Create the key if missing 
+ForceRegKey($chromePolicyKey)
 
 
 ## Job: DisableBuiltinDNS, H:\dev.public\VM_Setup\03_Chrome\DisableBuiltinDNS.ps1
 $jobs.Add("\03_Chrome\DisableBuiltinDNS.ps1", {
-#Create the key if missing 
-If((Test-Path 'HKLM:\Software\Policies\Google\Chrome') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Google\Chrome' -force -Force } 
 
 #Disable the Policy 
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Google\Chrome' -Name 'BuiltInDnsClientEnabled' -Value 0 -Force 
+Set-ItemProperty -Path $chromePolicyKey -Name 'BuiltInDnsClientEnabled' -Value 0 -Force 
 })
 
 
 ## Job: DisableSafeBrowsing, H:\dev.public\VM_Setup\03_Chrome\DisableSafeBrowsing.ps1
 $jobs.Add("\03_Chrome\DisableSafeBrowsing.ps1", {
-#Create the key if missing 
-If((Test-Path 'HKLM:\Software\Policies\Google\Chrome') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Google\Chrome' -force -Force } 
 
 #Disable the Policy 
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Google\Chrome' -Name 'SafeBrowsingEnabled' -Value 0 -Force 
+Set-ItemProperty -Path $chromePolicyKey -Name 'SafeBrowsingEnabled' -Value 0 -Force 
 })
 
 
 ## Job: DisableSafeSearch, H:\dev.public\VM_Setup\03_Chrome\DisableSafeSearch.ps1
 $jobs.Add("\03_Chrome\DisableSafeSearch.ps1", {
-#Create the key if missing 
-If((Test-Path 'HKLM:\Software\Policies\Google\Chrome') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Google\Chrome' -force -Force } 
 
 #Disable the Policy 
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Google\Chrome' -Name 'ForceGoogleSafeSearch' -Value 0 -Force 
+Set-ItemProperty -Path $chromePolicyKey -Name 'ForceGoogleSafeSearch' -Value 0 -Force 
 
 })
 
 
 ## Job: DisableUpdates, H:\dev.public\VM_Setup\03_Chrome\DisableUpdates.ps1
 $jobs.Add("\03_Chrome\DisableUpdates.ps1", {
+$chromeUpdateKey = 'HKLM:\Software\Policies\Google\Update'
+
 #Create the key if missing 
-If((Test-Path 'HKLM:\Software\Policies\Google\Update') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Google\Update' -force} 
+ForceRegKey($chromeUpdateKey)
 
 #Settings 
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Google\Update' -Name 'UpdateDefault' -Value 0 -Force
+Set-ItemProperty -Path $chromeUpdateKey -Name 'UpdateDefault' -Value 0 -Force
 
 #Settings 
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Google\Update' -Name 'AutoUpdateCheckPeriodMinutes' -Value 0 -Force
+Set-ItemProperty -Path $chromeUpdateKey -Name 'AutoUpdateCheckPeriodMinutes' -Value 0 -Force
 })
+
+$FireFoxBasePolicyRegKey = 'HKLM:\Software\Policies\Mozilla\Firefox'
+
+ForceRegKey($FireFoxBasePolicyRegKey)
 
 
 ## Job: DisableAddOnWizard, H:\dev.public\VM_Setup\03_Firefox\DisableAddOnWizard.ps1
 $jobs.Add("\03_Firefox\DisableAddOnWizard.ps1", {
-#Create the key if missing 
-If((Test-Path 'HKLM:\Software\Policies\Mozilla\Firefox') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -force -ea SilentlyContinue } 
 
 #Enable the Policy
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -Name 'DisableAddonWizard' -Value 1 -ea SilentlyContinue 
+Set-ItemProperty -Path $FireFoxBasePolicyRegKey-Name 'DisableAddonWizard' -Value 1 -ea SilentlyContinue 
 })
 
 
 ## Job: DisableAutomaticUpdates, H:\dev.public\VM_Setup\03_Firefox\DisableAutomaticUpdates.ps1
 $jobs.Add("\03_Firefox\DisableAutomaticUpdates.ps1", {
-#Create the key if missing 
-If((Test-Path 'HKLM:\Software\Policies\Mozilla\Firefox') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -force -ea SilentlyContinue } 
 
 #Settings 
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -Name 'DisableUpdate' -Value 1 -ea SilentlyContinue 
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -Name 'DisableExtensionsUpdate' -Value 1 -ea SilentlyContinue 
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -Name 'DisableSearchUpdate' -Value 1 -ea SilentlyContinue 
+Set-ItemProperty -Path $FireFoxBasePolicyRegKey -Name 'DisableUpdate' -Value 1 -ea SilentlyContinue 
+Set-ItemProperty -Path $FireFoxBasePolicyRegKey -Name 'DisableExtensionsUpdate' -Value 1 -ea SilentlyContinue 
+Set-ItemProperty -Path $FireFoxBasePolicyRegKey -Name 'DisableSearchUpdate' -Value 1 -ea SilentlyContinue 
 
 })
 
 
 ## Job: DisableDefaultBrowserCheck, H:\dev.public\VM_Setup\03_Firefox\DisableDefaultBrowserCheck.ps1
 $jobs.Add("\03_Firefox\DisableDefaultBrowserCheck.ps1", {
-#Create the key if missing 
-If((Test-Path 'HKLM:\Software\Policies\Mozilla\Firefox') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -force -ea SilentlyContinue } 
 
 #Enable the Policy
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -Name 'DisableDefaultCheck' -Value 1 -ea SilentlyContinue 
+Set-ItemProperty -Path $FireFoxBasePolicyRegKey -Name 'DisableDefaultCheck' -Value 1 -ea SilentlyContinue 
 
 })
 
 
 ## Job: DisableKnowYourRights, H:\dev.public\VM_Setup\03_Firefox\DisableKnowYourRights.ps1
 $jobs.Add("\03_Firefox\DisableKnowYourRights.ps1", {
-#Create the key if missing 
-If((Test-Path 'HKLM:\Software\Policies\Mozilla\Firefox') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -force -ea SilentlyContinue } 
 
 #Enable the Policy
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -Name 'DisableRights' -Value 1 -ea SilentlyContinue 
+Set-ItemProperty -Path $FireFoxBasePolicyRegKey -Name 'DisableRights' -Value 1 -ea SilentlyContinue 
 
 })
 
 
 ## Job: DisableTelemetry, H:\dev.public\VM_Setup\03_Firefox\DisableTelemetry.ps1
 $jobs.Add("\03_Firefox\DisableTelemetry.ps1", {
-#Create the key if missing 
-If((Test-Path 'HKLM:\Software\Policies\Mozilla\Firefox') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -force -ea SilentlyContinue } 
 
 #Enable the Policy
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -Name 'DisableTelemetry' -Value 1 -ea SilentlyContinue 
+Set-ItemProperty -Path $FireFoxBasePolicyRegKey -Name 'DisableTelemetry' -Value 1 -ea SilentlyContinue 
 
 })
 
 
 ## Job: DisableWhatsNew, H:\dev.public\VM_Setup\03_Firefox\DisableWhatsNew.ps1
 $jobs.Add("\03_Firefox\DisableWhatsNew.ps1", {
-#Create the key if missing 
-If((Test-Path 'HKLM:\Software\Policies\Mozilla\Firefox') -eq $false ) { New-Item -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -force -ea SilentlyContinue } 
 
 #Enable the Policy
-Set-ItemProperty -Path 'HKLM:\Software\Policies\Mozilla\Firefox' -Name 'SupressUpdatePage' -Value 1 -ea SilentlyContinue 
+Set-ItemProperty -Path $FireFoxBasePolicyRegKey -Name 'SupressUpdatePage' -Value 1 -ea SilentlyContinue 
 
 })
 
 $OfficeVersions = Get-ChildItem -Path "HKCU:\Software\Microsoft\Office\" | Where-Object {$_.Name.Contains('.0')} | ForEach-Object { $_.PSChildName }
 
-
-
-## Job: AllowOpeningCDRFiles, H:\dev.public\VM_Setup\03_Office\AllowOpeningCDRFiles.ps1
-$jobs.Add("\03_Office\AllowOpeningCDRFiles.ps1", {
-$key = "HKCU:\Software\Microsoft\Office\Shared Tools\Graphics Filters\Import\CDR"
-ForceRegKey($key)
-Set-ItemProperty -Path $key -Type DWORD -Value 0x1 -Force
-})
 
 
 ## Job: DisableAppSecurity, H:\dev.public\VM_Setup\03_Office\DisableAppSecurity.ps1
