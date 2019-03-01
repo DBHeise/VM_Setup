@@ -1,4 +1,4 @@
-## Created: 03/01/2019 16:46:54
+## Created: 03/01/2019 16:53:43
 $jobs = @{}
 function ForceRegKey ($path) {
     if (!(Test-path $path)) {
@@ -467,9 +467,13 @@ Set-ItemProperty -Path $key -Name 'NoPopupManagement' -Value 1 -ea SilentlyConti
 ## Job: fakeIEHistory, H:\dev.public\VM_Setup\02_InternetExplorer\fakeIEHistory.ps1
 $jobs.Add("\02_InternetExplorer\fakeIEHistory.ps1", {
 if (Test-Connection "internetbeacon.msedge.net" -Quiet) {
-    1..100 | % {
-        [System.Diagnostics.Process]::Start("http://www.randomwebsite.com/cgi-bin/random.pl")
+    $ie = New-Object -ComObject InternetExplorer.Application
+    $ie.Visible = $true
+    1..100 | % {        
+        $ie.Navigate("http://www.uroulette.com/visit/trps")
+        Start-Sleep -Seconds 1
     }
+    $ie.Quit()
 } else {
     ##TODO: How to fake IE history while offline
 }
