@@ -19,6 +19,9 @@ $OfficeVersions| % {
         $key_File = "HKCU:\Software\Microsoft\Office\" + $v + "\" + $a + "\File MRU"
         $key_Place = "HKCU:\Software\Microsoft\Office\" + $v + "\" + $a + "\Place MRU"
 
+        ForceRegKey($key_File)
+        ForceRegKey($key_Place)
+        
         1..(Get-Random -Minimum 15 -Maximum 30)| % {
             $i = $_
             $id = RandomId
