@@ -1,5 +1,5 @@
 # Disable Windows Defender
-
+ForceRegKey("HKLM:\Software\Policies\Microsoft\Windows Defender")
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -Type DWord -Value 1
 
 
