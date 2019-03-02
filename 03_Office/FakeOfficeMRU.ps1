@@ -6,9 +6,16 @@ $baseFolder = Join-Path $home "Documents"
 function RandomId {
     return [String]::Join('',(1..15 | % {"0123456789ABCDEF".ToCharArray() | Get-Random}))
 }
-
-function RandomFileName {
-    return [String]::Join('',(1..20 | % {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890".ToCharArray() | Get-Random})) + ".bin"
+function RandomExtension($app) {
+    switch ($app) {
+        "Word" { return @(".doc", ".docx") | Get-Random -Count 1}
+        "Excel" { return @(".xls", ".xlsb", ".xlsx") | Get-Random -Count 1}
+        "PowerPoint" { return @(".ppt", ".pptx") | Get-Random -Count 1}
+        Default { return ".bin"}
+    }
+}
+function RandomFileName($app) {
+    return [String]::Join('',(1..20 | % {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890".ToCharArray() | Get-Random})) + (RandomExtension($app))
 }
 
 
