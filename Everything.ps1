@@ -1,4 +1,4 @@
-## Created: 03/01/2019 20:03:04
+## Created: 03/02/2019 14:12:20
 $jobs = @{}
 function ForceRegKey ($path) {
     if (!(Test-path $path)) {
@@ -346,9 +346,8 @@ Set-ItemPropertyEx -Path "HKLM:\Software\Policies\Microsoft\SystemCertificates\A
 
 ## Job: DisableJavaUpdateScheduler, H:\dev.public\VM_Setup\01_Java\DisableJavaUpdateScheduler.ps1
 $jobs.Add("\01_Java\DisableJavaUpdateScheduler.ps1", {
-
-Remove-ItemProperty -Path "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Run" -Name "SunJavaUpdateSched" -Force
-Remove-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Run" -Name "SunJavaUpdateSched" -Force
+Remove-ItemProperty -Path "HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Run" -Name "SunJavaUpdateSched" -Force -ErrorAction SilentlyContinue
+Remove-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Run" -Name "SunJavaUpdateSched" -Force -ErrorAction SilentlyContinue
 
 $jusched="C:\Program Files\Common Files\Java\Java Update\jusched.exe"
 
