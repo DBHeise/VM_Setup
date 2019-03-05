@@ -8,6 +8,12 @@ From an "administrator" powershell prompt run:
 (Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/DBHeise/VM_Setup/master/Everything.ps1").Content | IEX
 ```
 
+you may need to run this command first to upgrade the default TLS version on a vanilla Win7 install
+```
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+```
+
+
 ## Status:
 ### Windows
     * pretty good
