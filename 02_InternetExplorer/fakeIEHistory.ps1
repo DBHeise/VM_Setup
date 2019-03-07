@@ -20,8 +20,8 @@ if (Test-Connection "internetbeacon.msedge.net" -Quiet) {
     $ie = New-Object -ComObject InternetExplorer.Application
     $ie.Visible = $true
     1..100 | % {        
-        $host = GetRandomHost
-        $ie.Navigate($host)
+        $hostname = GetRandomHost
+        $ie.Navigate($hostname)
         Start-Sleep -Seconds 1
     }
     $ie.Quit()
