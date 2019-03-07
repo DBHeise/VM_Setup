@@ -1,4 +1,4 @@
-## Created: 03/04/2019 21:17:37
+## Created: 03/07/2019 16:11:23
 $jobs = @{}
 function ForceRegKey ($path) {
     if (!(Test-path $path)) {
@@ -512,8 +512,8 @@ if (Test-Connection "internetbeacon.msedge.net" -Quiet) {
     $ie = New-Object -ComObject InternetExplorer.Application
     $ie.Visible = $true
     1..100 | % {        
-        $host = GetRandomHost
-        $ie.Navigate($host)
+        $hostname = GetRandomHost
+        $ie.Navigate($hostname)
         Start-Sleep -Seconds 1
     }
     $ie.Quit()
