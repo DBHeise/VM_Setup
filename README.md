@@ -13,6 +13,11 @@ you may need to run this command first to upgrade the default TLS version on a v
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 ```
 
+If you're using an older version of powershell this command might work better for you:
+```
+(New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/DBHeise/VM_Setup/master/Everything.ps1") | IEX
+```
+
 
 ## Status:
 ### Windows
