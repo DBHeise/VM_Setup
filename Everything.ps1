@@ -1,4 +1,4 @@
-## Created: 10/21/2019 15:43:33
+## Created: 10/21/2019 15:47:33
 $jobs = @{}
 function ForceRegKey ($path) {
     if (!(Test-path $path)) {
@@ -617,7 +617,7 @@ else {
         }
 "@
     }
-    1..100 | % {        
+    1..100 | ForEach-Object {        
         [Win32Api.Helper]::AddUrl("http://test.example.com", (RandomWord -Count 1)[0] + ".com")
     }
 }
