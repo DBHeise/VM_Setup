@@ -125,8 +125,7 @@ else {
         }
 "@
     }
-    1..100 | % {        
-        $domain = (RandomWord -Count 1)[0] + ".com"
-        [Win32Api.Helper]::AddUrl("http://test.example.com", (RandomWord -Count 1)[0])
+    1..100 | ForEach-Object {        
+        [Win32Api.Helper]::AddUrl("http://test.example.com", (RandomWord -Count 1)[0] + ".com")
     }
 }
