@@ -18,6 +18,7 @@ Set-ItemProperty -Path $chromeUpdateKeyWOW -Name 'UpdateDefault' -Value 0 -Force
 Set-ItemProperty -Path $chromeUpdateKeyWOW -Name 'AutoUpdateCheckPeriodMinutes' -Value 0 -Force
 Set-ItemProperty -Path $chromeUpdateKeyWOW -Name 'DisableAutoUpdateChecksCheckboxValue' -Value 1 -Force
 
+#Dynamically get the GUID needed to disable the update service
 if (Test-Path $folder86) {    
     Get-ChildItem -Path ($folder86 + "\Download") | ForEach-Object {
         $guid = $_.Name
@@ -25,7 +26,6 @@ if (Test-Path $folder86) {
         Set-ItemProperty -Path $chromeUpdateKeyWOW -Name ('Update' + $guid) -Value 0 -Force    
     }
 }
-
 if (Test-Path $folder64) {    
     Get-ChildItem -Path ($folder64 + "\Download") | ForEach-Object {
         $guid = $_.Name
@@ -46,3 +46,9 @@ Set-Service -Name gupdatem -StartupType Disabled
 if (Test-Path $folder86) { Remove-Item -Path $folder86 -Force | Out-Null }
 if (Test-Path $folder64) { Remove-Item -Path $folder64 -Force | Out-Null }
 
+#Remove the Scheduled Tasks
+Unregister-ScheduledTask -TaskName @("GoogleUpdateTaskMachineCore", "GoogleUpdateTaskMachineUA") -Confirm:$false
+
+#Remove the Services
+(Get-WmiObject Win32_Service -filter "name='gupdate'").Delete()
+(Get-WmiObject Win32_Service -filter "name='gupdatem'").Delete()

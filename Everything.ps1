@@ -1,4 +1,4 @@
-## Created: 10/21/2019 15:53:11
+## Created: 01/09/2020 18:19:49
 $jobs = @{}
 function ForceRegKey ($path) {
     if (!(Test-path $path)) {
@@ -104,12 +104,28 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Force
 })
 
 
+## Job: DisableASLR, H:\dev.public\VM_Setup\00_Windows\DisableASLR.ps1
+$jobs.Add("\00_Windows\DisableASLR.ps1", {
+$key = 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management'
+ForceRegKey($key)
+Set-ItemProperty -Path $key -Name 'MoveImages' -Value 0x0 -ea SilentlyContinue 
+})
+
+
 ## Job: DisableAutomaticProxyCache, H:\dev.public\VM_Setup\00_Windows\DisableAutomaticProxyCache.ps1
 $jobs.Add("\00_Windows\DisableAutomaticProxyCache.ps1", {
 #Disable Automatic Proxy Result Cache
 $key = "HKCU:\Software\Policies\Microsoft\Windows\CurrentVersion\Internet Settings"
 ForceRegKey($key)
 Set-ItemProperty -Path  $key -Name EnableAutoproxyResultCache -Type DWORD -Value 0x0 -Force
+
+})
+
+
+## Job: DisableDEP, H:\dev.public\VM_Setup\00_Windows\DisableDEP.ps1
+$jobs.Add("\00_Windows\DisableDEP.ps1", {
+
+start-process bcdedit.exe -ArgumentList @("/set","{current}","nx","AlwaysOff")
 
 })
 
@@ -788,6 +804,7 @@ Set-ItemProperty -Path $chromeUpdateKeyWOW -Name 'UpdateDefault' -Value 0 -Force
 Set-ItemProperty -Path $chromeUpdateKeyWOW -Name 'AutoUpdateCheckPeriodMinutes' -Value 0 -Force
 Set-ItemProperty -Path $chromeUpdateKeyWOW -Name 'DisableAutoUpdateChecksCheckboxValue' -Value 1 -Force
 
+#Dynamically get the GUID needed to disable the update service
 if (Test-Path $folder86) {    
     Get-ChildItem -Path ($folder86 + "\Download") | ForEach-Object {
         $guid = $_.Name
@@ -795,7 +812,6 @@ if (Test-Path $folder86) {
         Set-ItemProperty -Path $chromeUpdateKeyWOW -Name ('Update' + $guid) -Value 0 -Force    
     }
 }
-
 if (Test-Path $folder64) {    
     Get-ChildItem -Path ($folder64 + "\Download") | ForEach-Object {
         $guid = $_.Name
@@ -816,7 +832,12 @@ Set-Service -Name gupdatem -StartupType Disabled
 if (Test-Path $folder86) { Remove-Item -Path $folder86 -Force | Out-Null }
 if (Test-Path $folder64) { Remove-Item -Path $folder64 -Force | Out-Null }
 
+#Remove the Scheduled Tasks
+Unregister-ScheduledTask -TaskName @("GoogleUpdateTaskMachineCore", "GoogleUpdateTaskMachineUA") -Confirm:$false
 
+#Remove the Services
+(Get-WmiObject Win32_Service -filter "name='gupdate'").Delete()
+(Get-WmiObject Win32_Service -filter "name='gupdatem'").Delete()
 })
 
 $FireFoxBasePolicyRegKey = 'HKLM:\Software\Policies\Mozilla\Firefox'
