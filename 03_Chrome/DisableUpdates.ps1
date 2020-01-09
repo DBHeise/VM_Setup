@@ -47,7 +47,12 @@ if (Test-Path $folder86) { Remove-Item -Path $folder86 -Force | Out-Null }
 if (Test-Path $folder64) { Remove-Item -Path $folder64 -Force | Out-Null }
 
 #Remove the Scheduled Tasks
-Unregister-ScheduledTask -TaskName @("GoogleUpdateTaskMachineCore", "GoogleUpdateTaskMachineUA") -Confirm:$false
+if (Get-Command "Unregister-ScheduledTask" -ErrorAction SilentlyContinue) {
+    Unregister-ScheduledTask -TaskName @("GoogleUpdateTaskMachineCore", "GoogleUpdateTaskMachineUA") -Confirm:$false
+} else {
+    Start-Process -FilePath "C:\windows\System32\schtasks.exe" -ArgumentList @("/DELETE", "/TN", "`"GoogleUpdateTaskMachineCore`"", "/F")
+    Start-Process -FilePath "C:\windows\System32\schtasks.exe" -ArgumentList @("/DELETE", "/TN", "`"GoogleUpdateTaskMachineUA`"", "/F")
+}
 
 #Remove the Services
 (Get-WmiObject Win32_Service -filter "name='gupdate'").Delete()

@@ -23,7 +23,7 @@ Write-Progress -Activity "Processing Jobs" -Status "Starting..."
     Write-Progress -Activity "Processing Jobs" -Status `$key -PercentComplete (`$i / `$jobs.Count * 100)
     Invoke-Command -ScriptBlock `$jobs[`$key] -ErrorAction Stop
 }
-Write-Progress -Activity "Processing Jobs" -Completed
+Write-Progress -Activity "Processing Jobs" -Status "Completed" -Completed
 
 
 "@
