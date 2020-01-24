@@ -1,4 +1,4 @@
-## Created: 01/09/2020 19:16:28
+## Created: 01/24/2020 14:44:22
 $jobs = @{}
 function ForceRegKey ($path) {
     if (!(Test-path $path)) {
@@ -418,6 +418,16 @@ $key = 'HKLM:\Software\Policies\Microsoft\Internet Explorer\Geolocation'
 ForceRegKey($key)
 #Enable the Policy
 Set-ItemProperty -Path $key -Name 'PolicyDisableGeolocation' -Value 1 -Force
+})
+
+
+## Job: DisableCertRevocationCheck, H:\dev.public\VM_Setup\02_InternetExplorer\DisableCertRevocationCheck.ps1
+$jobs.Add("\02_InternetExplorer\DisableCertRevocationCheck.ps1", {
+#Disable Certificate Revocation Checks
+$key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings\CertificateRevocation"
+ForceRegKey($key)
+Set-ItemProperty -Path  $key -Name EnableAutoproxyResultCache -Type DWORD -Value 0x0 -Force
+
 })
 
 
