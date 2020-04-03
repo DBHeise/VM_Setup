@@ -1,4 +1,4 @@
-## Created: 01/24/2020 14:44:22
+## Created: 04/03/2020 14:44:29
 $jobs = @{}
 function ForceRegKey ($path) {
     if (!(Test-path $path)) {
@@ -916,6 +916,17 @@ Set-ItemProperty -Path $FireFoxBasePolicyRegKey -Name 'SupressUpdatePage' -Value
 
 $OfficeVersions = Get-ChildItem -Path "HKCU:\Software\Microsoft\Office\" | Where-Object {$_.Name.Contains('.0')} | ForEach-Object { $_.PSChildName }
 
+
+
+## Job: ActivateOffice, H:\dev.public\VM_Setup\03_Office\ActivateOffice.ps1
+$jobs.Add("\03_Office\ActivateOffice.ps1", {
+
+@($env:ProgramFiles, ${env:ProgramFiles(x86)}) | ForEach-Object { Get-ChildItem $_\*Office } | ForEach-Object { Get-ChildItem $_ -Recurse -Include ospp.vbs } | ForEach-Object{
+    Push-Location (Split-Path $_)
+    cscript.exe ospp.vbs /act
+    Pop-Location
+}
+})
 
 
 ## Job: DisableAppSecurity, H:\dev.public\VM_Setup\03_Office\DisableAppSecurity.ps1
